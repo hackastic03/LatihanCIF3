@@ -19,7 +19,7 @@ Include menggunakan <> untuk library yang sudah ada bawaaan dari C-nya, dan "" u
 Include bisa memakai path, tapi tidak disarankan karena akan mempersulit saat compile
 #### 7. Mengenai pointer
 https://youtu.be/zuegQmMdy8M?si=2vKup4Q8nyQV9qog
-Untuk format specifier, bisa menggunakan %p atau langsung %<tipe data> (misal %d untuk int)
+Untuk format specifier, bisa menggunakan %p atau langsung %(tipe data) (misal %d untuk int)
 #### 8. Mengenai unsigned
 https://www.educba.com/unsigned-int-in-c/
 #### 9. Kehilangannya boolean di C
