@@ -33,4 +33,9 @@ Malloc adalah alokasi memori terlebih dahulu untuk data dinamis, karena besaran 
 https://stackoverflow.com/questions/8800482/when-and-why-to-use-malloc
 #### 12. Mengenai enum
 Enumerasi sebagai tipe data enum adalah tipe data yang berisi kumpulan konstanta yang telah diberi nama. Bisa dibilang indeks yang awalnya 0, 1, 2 diubah menjadi nama2 yang bisa kita ubah
-
+#### 13. Mengenai scanf
+Scanf digunakan untuk mengambil input pengguna ke alamat dari variabel yang memuat nilai yang diinginkan. Sintaksnya adalah scanf("%</format specifier>", &<nama variabel>)
+#### 14. Mengenai struct
+Struct adalah tipe data yang berisi kumpulan variabel yang bisa berbeda tipe datanya. Struct bisa dianggap sebagai tipe data baru yang dibuat sendiri. Lebih lengkapnya lihat catatan Alstrukdat PPT
+#### 15. String dalam input
+https://www.geeksforgeeks.org/taking-string-input-space-c-3-different-methods/
