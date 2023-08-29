@@ -39,3 +39,5 @@ Scanf digunakan untuk mengambil input pengguna ke alamat dari variabel yang memu
 Struct adalah tipe data yang berisi kumpulan variabel yang bisa berbeda tipe datanya. Struct bisa dianggap sebagai tipe data baru yang dibuat sendiri. Lebih lengkapnya lihat catatan Alstrukdat PPT
 #### 15. String dalam input
 https://www.geeksforgeeks.org/taking-string-input-space-c-3-different-methods/
+#### 16. Struktur header
+https://youtu.be/5UMHbzZGQuE?si=tm_1fxFu8jpIyJus
