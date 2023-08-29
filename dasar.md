@@ -41,3 +41,7 @@ Struct adalah tipe data yang berisi kumpulan variabel yang bisa berbeda tipe dat
 https://www.geeksforgeeks.org/taking-string-input-space-c-3-different-methods/
 #### 16. Struktur header
 https://youtu.be/5UMHbzZGQuE?si=tm_1fxFu8jpIyJus
+#### 17. Mengenai struct
+https://youtu.be/CI9dRTvzgqE?si=2i8qJFWv2ZAaRceY
+#### 18. Struct vs Class
+https://youtu.be/fLgTtaqqJp0?si=mVRiusuZHtWYiugI
