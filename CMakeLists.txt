@@ -1,5 +1,4 @@
-add_executable(test1.c
-        test1.h
-        test1-function.h
-        test1-function.c
-        test2.c)
+add_executable(Pointer/test1.c
+        Time/time.c)
+
+add_executable()

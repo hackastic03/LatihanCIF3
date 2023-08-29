@@ -45,3 +45,5 @@ https://youtu.be/5UMHbzZGQuE?si=tm_1fxFu8jpIyJus
 https://youtu.be/CI9dRTvzgqE?si=2i8qJFWv2ZAaRceY
 #### 18. Struct vs Class
 https://youtu.be/fLgTtaqqJp0?si=mVRiusuZHtWYiugI
+#### 19. Mengenai format untuk desimal
+Agar nilai desimal tidak terlalu banyak digit di belakang koma, bisa menggunakan %.2f untuk 2 digit di belakang koma, atau format dasarnya adalah %.nf di mana f adalah banyak digit di belakang koma

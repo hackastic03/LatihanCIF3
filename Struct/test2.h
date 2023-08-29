@@ -13,6 +13,11 @@ typedef struct {
     int menit;
 } waktu;
 
+typedef struct {
+    float x;
+    float y;
+} point;
+
 int volumeTabung(int r, int t);
 
 #endif //LATIHAN_TEST2_H
