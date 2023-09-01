@@ -1,17 +1,25 @@
 #include <stdio.h>
-#include "point.c"
+#include "point.h"
 
 int main() {
-    POINT p1, p2; // Deklarasi variabel, yang artinya si variabel udah ada di memori (sudah dialokasikan tapi belum diisi nilainya
-    float dx, dy;
-    printf("Masukkan titik 1: \n");
-    BacaPOINT(&p1); // Yang dimasukkan adalah address dari variabel p1 yang tadi sudah dideklarasikan.
-    printf("Titik yang dibaca adalah \n");
+//    POINT p1, p2; // Deklarasi variabel, yang artinya si variabel udah ada di memori (sudah dialokasikan tapi belum diisi nilainya
+//    float dx, dy;
+//    printf("Masukkan titik 1: \n");
+//    BacaPOINT(&p1); // Yang dimasukkan adalah address dari variabel p1 yang tadi sudah dideklarasikan.
+//    printf("Titik yang dibaca adalah \n");
+//    TulisPOINT(p1);
+//    printf("Masukkan titik 2: \n");
+//    BacaPOINT(&p2);
+//    TulisPOINT(p2);
+//    printf("%d\n", EQ(p1, p2));
+//    printf("")
+    POINT p1;
+    Absis(p1) = 1;
+    Ordinat(p1) = 0;
+    Putar(&p1, 180);
+//    printf("%d %d\n", Absis(p1), Ordinat(p1));
     TulisPOINT(p1);
-    printf("Masukkan titik 2: \n");
-    BacaPOINT(&p2);
-    TulisPOINT(p2);
-    printf("%d\n", EQ(p1, p2));
+
     return 0;
 }
 

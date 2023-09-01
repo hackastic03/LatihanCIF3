@@ -47,3 +47,8 @@ https://youtu.be/CI9dRTvzgqE?si=2i8qJFWv2ZAaRceY
 https://youtu.be/fLgTtaqqJp0?si=mVRiusuZHtWYiugI
 #### 19. Mengenai format untuk desimal
 Agar nilai desimal tidak terlalu banyak digit di belakang koma, bisa menggunakan %.2f untuk 2 digit di belakang koma, atau format dasarnya adalah %.nf di mana f adalah banyak digit di belakang koma
+#### 20. Mengenai malloc vs calloc
+https://www.geeksforgeeks.org/difference-between-malloc-and-calloc-with-examples/
+Setelah memori dialokasikan menggunakan malloc atau calloc, kita bisa menggunakan fungsi free untuk menghapus alokasi memori dari variabel tersebut
+#### 21. Array statis
+https://www.youtube.com/playlist?list=PLBlnK6fEyqRjoG6aJ4FvFU1tlXbjLBiOP
