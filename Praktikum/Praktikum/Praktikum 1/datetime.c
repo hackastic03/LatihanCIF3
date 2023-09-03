@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include "datetime.h"
-#include <math.h>
 #include "boolean.h"
-#include "time.h"
+//#include "time.h"
+#include "time.c"
 
 int GetMaxDay(int M, int Y) {
     boolean kabisat;
@@ -121,7 +121,7 @@ void TulisDATETIME(DATETIME D) {
 /* ***************************************************************** */
 /* *** Kelompok operasi relasional terhadap DATETIME *** */
 boolean DEQ(DATETIME D1, DATETIME D2) {
-    return (Day(D1) == Day(D2) && Month(D1) == Month(D2) && Year(D1) == Year(D2) && TEQ(Time(D1), Time(D2)));
+    return ((Day(D1) == Day(D2)) && (Month(D1) == Month(D2)) && (Year(D1) == Year(D2)) && (TEQ(Time(D1), Time(D2))));
 }
 /* Mengirimkan true jika D1=D2, false jika tidak */
 boolean DNEQ(DATETIME D1, DATETIME D2) {
@@ -262,15 +262,43 @@ DATETIME DATETIMEPrevNDetik(DATETIME D, int N) {
 /* Mengirim salinan D dengan detik dikurang N */
 /* *** Kelompok Operator Aritmetika terhadap DATETIME *** */
 long int DATETIMEDurasi(DATETIME DAw, DATETIME DAkh) {
-    long int detik1, detik2, day1;
-    day1 = 0;
-    int i;
-    for (i = Month(DAw); i < Month(DAkh); i++) {
-        day1 += GetMaxDay(i, Year(DAw));
+    int i, k, hasil, countDay;
+    countDay = 0;
+    for (k = Year(DAw); k <= Year(DAkh); k++) {
+        for (i = Month(DAw); i <= Month(DAkh); i++) {
+            if (i == Month(DAw) && (k == Year(DAw))) {
+                countDay += GetMaxDay(i, k) - Day(DAw);
+            }
+            else if (i == Month(DAkh) && (k == Year(DAkh))) {
+                countDay += Day(DAkh) - 1;
+            }
+            else {
+                countDay += GetMaxDay(i, k);
+            }
+        }
     }
-    detik1 = TIMEToDetik(Time(DAw)) + 86400 * (Day(DAw) - 1) + 2592000 * (Month(DAw) - 1) + 31536000 * (Year(DAw) - 1);
-    detik2 = TIMEToDetik(Time(DAkh)) + 86400 * (Day(DAkh) - 1) + 2592000 * (Month(DAkh) - 1) + 31536000 * (Year(DAkh) - 1);
-    return (detik2 - detik1);
+    hasil = (countDay * 24 * 3600) + (86400 - TIMEToDetik(Time(DAw))) + (TIMEToDetik(Time(DAkh)));
+    return hasil;
+//    long int detik1, detik2, day1;
+//    day1 = 0;
+//    int i;
+//    for (i = Month(DAw) + 1; i <= Month(DAkh); i++) {
+//        day1 += GetMaxDay(i, Year(DAw));
+//    }
+//    detik1 = TIMEToDetik(Time(DAw)) + 86400 * (Day(DAw) - 1) + 2592000 * (Month(DAw) - 1) + 31536000 * (Year(DAw) - 1);
+//    detik2 = TIMEToDetik(Time(DAkh)) + 86400 * (Day(DAkh) - 1) + 2592000 * (Month(DAkh) - 1) + 31536000 * (Year(DAkh) - 1);
+//    return (detik2 - detik1);
 }
 /* Mengirim DAkh-DAw dlm Detik, dengan kalkulasi */
 /* Prekondisi: DAkh > DAw */
+
+int main() {
+    DATETIME D1, D2;
+    BacaDATETIME(&D1);
+    TulisDATETIME(D1);
+    BacaDATETIME(&D2);
+    TulisDATETIME(D2);
+    printf("%ld\n", DATETIMEDurasi(D1, D2));
+    TulisDATETIME(DATETIMENextNDetik(D1, 86400));
+    return 0;
+}

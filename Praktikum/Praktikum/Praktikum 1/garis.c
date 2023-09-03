@@ -12,6 +12,11 @@ void BacaGARIS (GARIS * L) {
     POINT p1, p2;
     BacaPOINT(&p1);
     BacaPOINT(&p2);
+    while (EQ(p1, p2)) {
+        printf("Garis tidak valid\n");
+        BacaPOINT(&p1);
+        BacaPOINT(&p2);
+    }
     CreateGaris(L, p1, p2);
 }
 /* I.S. sembarang */
@@ -30,7 +35,11 @@ void BacaGARIS (GARIS * L) {
    --> terbentuk garis L dengan L.PAw = <2,3> dan L.PAkh = <3,3> */
 
 void TulisGARIS (GARIS L) {
-    printf("(%.2f,%.2f),(%.2f,%.2f)", Absis(PAwal(L)), Ordinat(PAwal(L)), Absis(PAwal(L)), Ordinat(PAkhir(L)));
+    printf("(");
+    TulisPOINT(L.PAw);
+    printf(",");
+    TulisPOINT(L.PAkh);
+    printf(")");
 }
 /* I.S. L terdefinisi */
 /* F.S. L tertulis di layar dengan format "((x1,y1),(x2,y2))"
@@ -62,7 +71,7 @@ void GeserGARIS (GARIS * L, float deltaX, float deltaY) {
 
 /* *** Kelompok predikat *** */
 boolean IsTegakLurus (GARIS L1, GARIS L2) {
-    return (Gradien(L1) == -1 * (1 / Gradien(L2)));
+    return (Gradien(L1) * (Gradien(L2)) == -1);
 }
 /* Menghasilkan true jika L1 tegak lurus terhadap L2 */
 /* Dua garis saling tegak lurus jika hasil perkalian kedua gradiennya = -1 */
