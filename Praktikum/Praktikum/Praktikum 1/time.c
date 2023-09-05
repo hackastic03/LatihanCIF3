@@ -79,3 +79,11 @@ long Durasi (TIME TAw, TIME TAkh) {
     s = TIMEToDetik(TAkh) - TIMEToDetik(TAw);
     return ((s < 0) ? (86400 + s) : s);
 }
+
+//int main() {
+//    TIME T1, T2;
+//    BacaTIME(&T1);
+//    BacaTIME(&T2);
+//    printf("%ld\n", Durasi(T1, T2));
+//    return 0;
+//}

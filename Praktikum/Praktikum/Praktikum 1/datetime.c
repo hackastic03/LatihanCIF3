@@ -49,7 +49,7 @@ int GetMaxDay(int M, int Y) {
 
 boolean IsDATETIMEValid(int D, int M, int Y, int h, int m, int s) {
     if (IsTIMEValid(h, m, s)) {
-        if (M > 0 && m <= 12) {
+        if (M > 0 && M <= 12) {
             if (D <= GetMaxDay(M, Y) && D > 0) {
                 return true;
             }
@@ -70,14 +70,12 @@ boolean IsDATETIMEValid(int D, int M, int Y, int h, int m, int s) {
 
 /* *** Konstruktor: Membentuk sebuah DATETIME dari komponen-komponennya *** */
 void CreateDATETIME(DATETIME *D, int DD, int MM, int YYYY, int hh, int mm, int ss) {
-    if (IsDATETIMEValid(DD, MM, YYYY, hh, mm, ss)) {
-        TIME T;
-        (*D).DD = DD;
-        (*D).MM = MM;
-        (*D).YYYY = YYYY;
-        CreateTime(&T, hh, mm, ss);
-        (*D).T = T;
-    }
+    TIME T;
+    (*D).DD = DD;
+    (*D).MM = MM;
+    (*D).YYYY = YYYY;
+    CreateTime(&T, hh, mm, ss);
+    (*D).T = T;
 }
 /* Membentuk sebuah DATETIME dari komponen-komponennya yang valid */
 /* Prekondisi : DD, MM, YYYY, h, m, s valid untuk membentuk DATETIME */
@@ -87,10 +85,10 @@ void CreateDATETIME(DATETIME *D, int DD, int MM, int YYYY, int hh, int mm, int s
 /* ***************************************************************** */
 void BacaDATETIME(DATETIME *D) {
     int year, month, day, hour, minute, second;
-    scanf("%d %d %d %d %d %d", &year, &month, &day, &hour, &minute, &second);
+    scanf("%d %d %d %d %d %d", &day, &month, &year, &hour, &minute, &second);
     while (!IsDATETIMEValid(day, month, year, hour, minute, second)) {
         printf("DATETIME tidak valid\n");
-        scanf("%d %d %d %d %d %d", &year, &month, &day, &hour, &minute, &second);
+        scanf("%d %d %d %d %d %d", &day, &month, &year, &hour, &minute, &second);
     }
     CreateDATETIME(D, day, month, year, hour, minute, second);
 }
@@ -195,79 +193,76 @@ boolean DGT(DATETIME D1, DATETIME D2) {
 }
 /* Mengirimkan true jika D1>D2, false jika tidak */
 DATETIME DATETIMENextNDetik(DATETIME D, int N) {
+
     DATETIME D1;
-    Second(Time(D)) += N;
+    TIME T;
+//    Second(Time(D)) = TIMEToDetik(Time(D)) + N;
 
-    while (Second(Time(D)) > 59) {
-        Second(Time(D)) -= 60;
-        Minute(Time(D))++;
+    while (N > 86400)  {
+        N -= 86400;
+        Day(D)++;
+
+
+        while (Day(D) > GetMaxDay(Month(D), Year(D))) {
+            Day(D) = 1;
+            Month(D)++;
+
+            while (Month(D) > 12) {
+                Month(D) -= 12;
+                Year(D)++;
+            }
+        }
     }
 
-    while (Minute(Time(D)) > 59) {
-        Minute(Time(D)) -= 60;
-        Hour(Time(D))++;
-    }
-
-    while (Hour(Time(D)) > 23) {
-        Hour(Time(D)) -= 24;
+    T = NextNDetik(Time(D), N);
+    if (TIMEToDetik(Time(D)) + N > 86400) {
         Day(D)++;
     }
 
-    while (Day(D) > GetMaxDay(Month(D), Year(D))) {
-        Day(D) -= GetMaxDay(Month(D), Year(D));
-        Month(D)++;
-    }
-
-    while (Month(D) > 12) {
-        Month(D) -= 12;
-        Year(D)++;
-    }
-
-    CreateDATETIME(&D1, Day(D), Month(D), Year(D), Hour(Time(D)), Minute(Time(D)), Second(Time(D)));
+    CreateDATETIME(&D1, Day(D), Month(D), Year(D), Hour(T), Minute(T), Second(T));
     return D1;
+
+
 }
 /* Mengirim salinan D dengan detik ditambah N */
 DATETIME DATETIMEPrevNDetik(DATETIME D, int N) {
     DATETIME D1;
-    Second(Time(D)) -= N;
-
-    while (Second(Time(D)) < 0) {
-        Second(Time(D)) += 60;
-        Minute(Time(D))--;
-    }
-
-    while (Minute(Time(D)) < 0) {
-        Minute(Time(D)) += 60;
-        Hour(Time(D))--;
-    }
-
-    while (Hour(Time(D)) < 0) {
-        Hour(Time(D)) += 24;
+    TIME T;
+    while (N > 86400) {
+        N -= 86400;
         Day(D)--;
+
+        while (Day(D) < 0) {
+            Day(D) = GetMaxDay(Month(D) - 1, Year(D));
+            Month(D)--;
+
+            while (Month(D) < 0) {
+                Month(D) = 12;
+                Year(D)--;
+            }
+        }
     }
 
-    while (Day(D) < 1) {
-        Month(D)--;
-        Day(D) += GetMaxDay(Month(D), Year(D));
-    }
-
-    while (Month(D) < 1) {
-        Month(D) += 12;
-        Year(D)--;
-    }
-
-    CreateDATETIME(&D1, Day(D), Month(D), Year(D), Hour(Time(D)), Minute(Time(D)), Second(Time(D)));
+    T = PrevNDetik(Time(D), N);
+    CreateDATETIME(&D1, Day(D), Month(D), Year(D), Hour(T), Minute(T), Second(T));
     return D1;
 }
 /* Mengirim salinan D dengan detik dikurang N */
 /* *** Kelompok Operator Aritmetika terhadap DATETIME *** */
 long int DATETIMEDurasi(DATETIME DAw, DATETIME DAkh) {
-    int i, k, hasil, countDay;
+    int i, k, countDay;
+    long hasil;
     countDay = 0;
+
     for (k = Year(DAw); k <= Year(DAkh); k++) {
-        for (i = Month(DAw); i <= Month(DAkh); i++) {
+        for (i = 1; i <= 12; i++) {
+//            printf("Ini bulan %d tahun %d\n", i, k);
             if (i == Month(DAw) && (k == Year(DAw))) {
                 countDay += GetMaxDay(i, k) - Day(DAw);
+            }
+
+            else if (((i < Month(DAw)) && (k == Year(DAw))) || ((i > Month(DAkh)) && (k == Year(DAkh)))) {
+                countDay += 0;
             }
             else if (i == Month(DAkh) && (k == Year(DAkh))) {
                 countDay += Day(DAkh) - 1;
@@ -275,8 +270,12 @@ long int DATETIMEDurasi(DATETIME DAw, DATETIME DAkh) {
             else {
                 countDay += GetMaxDay(i, k);
             }
+
+
+
         }
     }
+
     hasil = (countDay * 24 * 3600) + (86400 - TIMEToDetik(Time(DAw))) + (TIMEToDetik(Time(DAkh)));
     return hasil;
 //    long int detik1, detik2, day1;
@@ -294,11 +293,18 @@ long int DATETIMEDurasi(DATETIME DAw, DATETIME DAkh) {
 
 int main() {
     DATETIME D1, D2;
+    long N;
     BacaDATETIME(&D1);
     TulisDATETIME(D1);
+    printf("\n");
     BacaDATETIME(&D2);
     TulisDATETIME(D2);
-    printf("%ld\n", DATETIMEDurasi(D1, D2));
-    TulisDATETIME(DATETIMENextNDetik(D1, 86400));
+    printf("\n");
+    printf("Durasi antara 2 datetime: %ld\n", DATETIMEDurasi(D1, D2));
+    printf("Masukkan tambahan waktu:");
+    scanf("%ld", &N);
+    TulisDATETIME(DATETIMENextNDetik(D1, N));
+    printf("\n");
+    TulisDATETIME(DATETIMEPrevNDetik(D2, N));
     return 0;
 }
