@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include "datetime.h"
 #include "boolean.h"
-//#include "time.h"
-#include "time.c"
+#include "time.h"
+//#include "time.c"
 
 int GetMaxDay(int M, int Y) {
     boolean kabisat;
@@ -195,116 +195,143 @@ boolean DGT(DATETIME D1, DATETIME D2) {
 DATETIME DATETIMENextNDetik(DATETIME D, int N) {
 
     DATETIME D1;
-    TIME T;
-//    Second(Time(D)) = TIMEToDetik(Time(D)) + N;
+    Second(Time(D)) += N;
 
-    while (N > 86400)  {
-        N -= 86400;
-        Day(D)++;
-
-
-        while (Day(D) > GetMaxDay(Month(D), Year(D))) {
-            Day(D) = 1;
-            Month(D)++;
-
-            while (Month(D) > 12) {
-                Month(D) -= 12;
-                Year(D)++;
-            }
-        }
+    while (Second(Time(D)) > 59) {
+        Second(Time(D)) -= 60;
+        Minute(Time(D))++;
     }
 
-    T = NextNDetik(Time(D), N);
-    if (TIMEToDetik(Time(D)) + N > 86400) {
+    while (Minute(Time(D)) > 59) {
+        Minute(Time(D)) -= 60;
+        Hour(Time(D))++;
+    }
+
+    while (Hour(Time(D)) > 23) {
+        Hour(Time(D)) -= 24;
         Day(D)++;
     }
 
-    CreateDATETIME(&D1, Day(D), Month(D), Year(D), Hour(T), Minute(T), Second(T));
+    while (Day(D) > GetMaxDay(Month(D), Year(D))) {
+        Day(D) -= GetMaxDay(Month(D), Year(D));
+        Month(D)++;
+    }
+
+    while (Month(D) > 12) {
+        Month(D) -= 12;
+        Year(D)++;
+    }
+
+    CreateDATETIME(&D1, Day(D), Month(D), Year(D), Hour(Time(D)), Minute(Time(D)), Second(Time(D)));
     return D1;
 
 
 }
 /* Mengirim salinan D dengan detik ditambah N */
+
+
 DATETIME DATETIMEPrevNDetik(DATETIME D, int N) {
     DATETIME D1;
-    TIME T;
-    while (N > 86400) {
-        N -= 86400;
-        Day(D)--;
+    Second(Time(D)) -= N;
 
-        while (Day(D) < 0) {
-            Day(D) = GetMaxDay(Month(D) - 1, Year(D));
-            Month(D)--;
-
-            while (Month(D) < 0) {
-                Month(D) = 12;
-                Year(D)--;
-            }
-        }
+    while (Second(Time(D)) < 0) {
+        Second(Time(D)) += 60;
+        Minute(Time(D))--;
     }
 
-    T = PrevNDetik(Time(D), N);
-    CreateDATETIME(&D1, Day(D), Month(D), Year(D), Hour(T), Minute(T), Second(T));
+    while (Minute(Time(D)) < 0) {
+        Minute(Time(D)) += 60;
+        Hour(Time(D))--;
+    }
+
+    while (Hour(Time(D)) < 0) {
+        Hour(Time(D)) += 24;
+        Day(D)--;
+    }
+
+    while (Day(D) < 1) {
+        Month(D)--;
+        Day(D) += GetMaxDay(Month(D), Year(D));
+    }
+
+    while (Month(D) < 1) {
+        Month(D) += 12;
+        Year(D)--;
+    }
+
+    CreateDATETIME(&D1, Day(D), Month(D), Year(D), Hour(Time(D)), Minute(Time(D)), Second(Time(D)));
     return D1;
 }
 /* Mengirim salinan D dengan detik dikurang N */
 /* *** Kelompok Operator Aritmetika terhadap DATETIME *** */
+
+
 long int DATETIMEDurasi(DATETIME DAw, DATETIME DAkh) {
-    int i, k, countDay;
-    long hasil;
-    countDay = 0;
+//    int i, k, countDay;
+//    long hasil;
+//    countDay = 0;
+//
+//    for (k = Year(DAw); k <= Year(DAkh); k++) {
+//        for (i = 1; i <= 12; i++) {
+//            if (i == Month(DAw) && (k == Year(DAw))) {
+//                countDay += GetMaxDay(i, k) - Day(DAw);
+//            }
+//
+//            else if (((i < Month(DAw)) && (k == Year(DAw))) || ((i > Month(DAkh)) && (k == Year(DAkh)))) {
+//                countDay += 0;
+//            }
+//            else if (i == Month(DAkh) && (k == Year(DAkh))) {
+//                countDay += Day(DAkh) - 1;
+//            }
+//            else {
+//                countDay += GetMaxDay(i, k);
+//            }
+//
+//
+//
+//        }
+//    }
+//
+//    hasil = (countDay * 24 * 3600) + (86400 - TIMEToDetik(Time(DAw))) + (TIMEToDetik(Time(DAkh)));
+//    return hasil;
+    long int hasil;
+    DATETIME D;
+    Year(D) = Year(DAw);
+    Month(D) = Month(DAw);
+    Day(D) = Day(DAw);
+    int countDays = 0;
 
-    for (k = Year(DAw); k <= Year(DAkh); k++) {
-        for (i = 1; i <= 12; i++) {
-//            printf("Ini bulan %d tahun %d\n", i, k);
-            if (i == Month(DAw) && (k == Year(DAw))) {
-                countDay += GetMaxDay(i, k) - Day(DAw);
-            }
+    hasil = Durasi(Time(DAw), Time(DAkh));
 
-            else if (((i < Month(DAw)) && (k == Year(DAw))) || ((i > Month(DAkh)) && (k == Year(DAkh)))) {
-                countDay += 0;
-            }
-            else if (i == Month(DAkh) && (k == Year(DAkh))) {
-                countDay += Day(DAkh) - 1;
-            }
-            else {
-                countDay += GetMaxDay(i, k);
-            }
+    Time(D) = Time(DAkh);
 
-
-
-        }
+    if (TGT(Time(DAw), Time(DAkh))) {
+        Day(D)++;
     }
 
-    hasil = (countDay * 24 * 3600) + (86400 - TIMEToDetik(Time(DAw))) + (TIMEToDetik(Time(DAkh)));
-    return hasil;
-//    long int detik1, detik2, day1;
-//    day1 = 0;
-//    int i;
-//    for (i = Month(DAw) + 1; i <= Month(DAkh); i++) {
-//        day1 += GetMaxDay(i, Year(DAw));
-//    }
-//    detik1 = TIMEToDetik(Time(DAw)) + 86400 * (Day(DAw) - 1) + 2592000 * (Month(DAw) - 1) + 31536000 * (Year(DAw) - 1);
-//    detik2 = TIMEToDetik(Time(DAkh)) + 86400 * (Day(DAkh) - 1) + 2592000 * (Month(DAkh) - 1) + 31536000 * (Year(DAkh) - 1);
-//    return (detik2 - detik1);
-}
+    while (DNEQ(D, DAkh)) {
+        D = DATETIMENextNDetik(D, 24 * 60 * 60);
+        countDays++;
+    }
+    return hasil + countDays * 86400;
 /* Mengirim DAkh-DAw dlm Detik, dengan kalkulasi */
 /* Prekondisi: DAkh > DAw */
-
-int main() {
-    DATETIME D1, D2;
-    long N;
-    BacaDATETIME(&D1);
-    TulisDATETIME(D1);
-    printf("\n");
-    BacaDATETIME(&D2);
-    TulisDATETIME(D2);
-    printf("\n");
-    printf("Durasi antara 2 datetime: %ld\n", DATETIMEDurasi(D1, D2));
-    printf("Masukkan tambahan waktu:");
-    scanf("%ld", &N);
-    TulisDATETIME(DATETIMENextNDetik(D1, N));
-    printf("\n");
-    TulisDATETIME(DATETIMEPrevNDetik(D2, N));
-    return 0;
 }
+
+//int main() {
+//    DATETIME D1, D2;
+//    long N;
+//    BacaDATETIME(&D1);
+//    TulisDATETIME(D1);
+//    printf("\n");
+//    BacaDATETIME(&D2);
+//    TulisDATETIME(D2);
+//    printf("\n");
+//    printf("Durasi antara 2 datetime: %ld\n", DATETIMEDurasi(D1, D2));
+//    printf("Masukkan tambahan waktu:");
+//    scanf("%ld", &N);
+//    TulisDATETIME(DATETIMENextNDetik(D1, N));
+//    printf("\n");
+//    TulisDATETIME(DATETIMEPrevNDetik(D2, N));
+//    return 0;
+//}
