@@ -52,3 +52,5 @@ https://www.geeksforgeeks.org/difference-between-malloc-and-calloc-with-examples
 Setelah memori dialokasikan menggunakan malloc atau calloc, kita bisa menggunakan fungsi free untuk menghapus alokasi memori dari variabel tersebut
 #### 21. Array statis
 https://www.youtube.com/playlist?list=PLBlnK6fEyqRjoG6aJ4FvFU1tlXbjLBiOP
+#### 22. Data dinamis
+https://www.geeksforgeeks.org/dynamic-memory-allocation-in-c-using-malloc-calloc-free-and-realloc/
