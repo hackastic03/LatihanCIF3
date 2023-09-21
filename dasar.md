@@ -1,5 +1,8 @@
 ### MATERI
 
+#### Run C/C++
+gcc "path and name of file to src code file.c/cpp" -o "name of file and the path of .exe"
+
 #### 1. Mengenai Pre-processor and Compiler
 Pre-processor adalah saat sebelum di-compile, data akan diolah duluan. 
 Compiler adalah saat file di-compile, dan dapat menggunakan hasil pre-processing sebelumnya saat compile
@@ -54,3 +57,5 @@ Setelah memori dialokasikan menggunakan malloc atau calloc, kita bisa menggunaka
 https://www.youtube.com/playlist?list=PLBlnK6fEyqRjoG6aJ4FvFU1tlXbjLBiOP
 #### 22. Data dinamis
 https://www.geeksforgeeks.org/dynamic-memory-allocation-in-c-using-malloc-calloc-free-and-realloc/
+#### 23. Mengenai constant dan global variable
+https://www.quora.com/What-is-the-difference-between-a-constant-and-a-global-variable-in-C-language
