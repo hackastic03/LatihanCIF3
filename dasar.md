@@ -59,3 +59,7 @@ https://www.youtube.com/playlist?list=PLBlnK6fEyqRjoG6aJ4FvFU1tlXbjLBiOP
 https://www.geeksforgeeks.org/dynamic-memory-allocation-in-c-using-malloc-calloc-free-and-realloc/
 #### 23. Mengenai constant dan global variable
 https://www.quora.com/What-is-the-difference-between-a-constant-and-a-global-variable-in-C-language
+#### 24. Mengenal extern
+Extern adalah proses deklarasi variabel dari file yang berbeda. Perbedaannya dengan define adalah define itu ada nilainya, dan saat
+pre-processing sebelum di-compile, setiap penggunaan konstanta dari define akan lansgung digantikan dengan nilai dari define. Sementara itu
+extern hanya deklarasi variabel. Syntax: extern data_type variable_name; contoh: extern int a;

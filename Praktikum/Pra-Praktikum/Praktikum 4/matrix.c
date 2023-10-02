@@ -309,12 +309,12 @@ void pTranspose(Matrix *m) {
 }
 
 
-//int main() {
-//    Matrix m;
-//    readMatrix(&m, 4, 3);
-//    displayMatrix(m);
-//    displayMatrix(transpose(m));
-//    printf("test");
-//    printf("%f", determinant(m));
-//    return 0;
-//}
+int main() {
+    Matrix m;
+    readMatrix(&m, 4, 3);
+    displayMatrix(m);
+    displayMatrix(transpose(m));
+    printf("test");
+    printf("%f", determinant(m));
+    return 0;
+}
