@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "boolean.h"
 #include "liststatik.h"
+//#include "liststatik.c"
 #include <math.h>
 
 int pangkatb(int a, int b) {
@@ -16,46 +17,31 @@ int main() {
     ListStatik l1, l2, l3;
     readList(&l1);
     readList(&l2);
-    int a, b, sum, sum2, i, j, pangkat;
+    int a, sum = 0, sum2 = 0, i;
     a = 0;
-    b = 0;
-    for (i = IDX_MIN; i < listLength(l1); i++) {
-        pangkat = (listLength(l1) - i - 2);
-        if (i != listLength(l1) - 1) {
-            a = a + (ELMT(l1, i) * pangkatb(10, pangkat));
-        }
-        else {
-            a += ELMT(l1, i);
-        }
+    for (i = listLength(l1) - 1; i >= 0; i--) {
+        sum += pangkatb(ELMT(l1, i), a);
+        a++;
+    }
+    a = 0;
+    for (i = listLength(l2) - 1; i >= 0; i--) {
+        sum2 += pangkatb(ELMT(l2, i), a);
+        a++;
     }
 
-    for (i = IDX_MIN; i < listLength(l2); i++) {
-        pangkat = (listLength(l2) - i - 2);
-        if (i != listLength(l2) - 1) {
-            b = b + (ELMT(l2, i) * pangkatb(10, pangkat));
-        }
-        else {
-            b += ELMT(l2, i);
-        }
-    }
-    sum = a + b;
-    sum2 = sum;
+    sum += sum2;
 
     CreateListStatik(&l3);
-    int n = 1;
-    if (sum > 9) {
-        while (sum > 9) {
-            sum = sum / 10;
-            n += 1;
-        }
+    // Hitung banyak digit
+    int temp = sum;
+    int n;
+    while (temp > 0) {
+        n = temp % 10;
+        temp /= 10;
+        insertFirst(&l3, n);
     }
-    int sisa;
 
-    for (i = IDX_MIN; i < n; i++) {
-        sisa = sum2 % 10;
-        sum2 = sum2 / 10;
-        ELMT(l3, 4 - i -1) = sisa;
-    }
+
     printList(l3);
     printf("\n");
 
