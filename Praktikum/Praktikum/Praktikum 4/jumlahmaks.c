@@ -4,41 +4,45 @@
 #include "matrix.h"
 // #include "matrix.c"
 
-
+int luas(int a, int b) {
+    return a * b;
+}
 
 
 int main() {
-    int m, n, kali;
-    Matrix m1;
-    scanf("%d", &n);
-    scanf("%d", &m);
-    scanf("%d", &kali);
-    readMatrix(&m1, n, m);
-    int sum = 0;
-    int i, j, k, l, p, t, max = 0, a, b;
-    for (i = 0; i < n; i++) {
-        t = 0;
-        for (l = i; l < (n - i); l++) {
-            t++;
-            for (j = 0; j < m; j++) {
-                p = 0;
-                for (k = j; k < (m - j); k++) {
-                    p++;
-                    if (t * p == kali) {
-                        sum = 0;
-                        for (a = i; a < l; a++) {
-                            for (b = j; b < k; b++) {
-                                sum += ELMT(m1, a, b);
-                            }
+    int row, col;
+    scanf("%d %d", &row, &col);
+    int l1;
+    scanf("%d", &l1);
+    int i, j, p, l, luas, maks = 0;
+    Matrix m;
+    readMatrix(&m, row, col);
+    for (i = 0; i < row; i++) {
+        for (j = 0; j < col; j++) {
+            for (p = i; p < row; p++) {
+                for (l = j; l < col; l++) {
+                    luas = 0;
+
+                    int x, y;
+                    for (x = i; x <= p; x++) {
+                        for (y = j; y <= l; y++) {
+                            luas += ELMT(m, x, y);
                         }
-                        if (sum > max) {
-                            max = sum;
-                        }
+                    }
+
+                    int panjang = p - i + 1;
+                    int lebar = l - j + 1;
+//                    printf("%d %d %d\n", panjang, lebar, luas);
+//                    printf("Indeks: %d %d %d\n", i, j, m.mem[i][j]);
+
+                    if (panjang * lebar == l1 && luas > maks) {
+                        maks = luas;
                     }
                 }
             }
         }
     }
-    printf("%d\n", max);
+
+    printf("%d\n", maks);
     return 0;
 }
