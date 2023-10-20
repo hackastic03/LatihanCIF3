@@ -3,39 +3,46 @@
 #include "stack.h"
 // #include "stack.c"
 
-int call(int n) {
+int main() {
+    Stack S;
+    CreateEmpty(&S);
+    int n, hasil = 0, temp;
+    scanf("%d", &n);
     if (n == 0) {
         printf("fibonacci(0)\n");
-        return 0;
+        hasil = 0;
     }
     else if (n == 1) {
         printf("fibonacci(1)\n");
-        return 1;
+        hasil = 1;
     }
     else {
-        printf("fibonacci(%d)\n", n);
-        return call(n - 1) + call(n - 2);
+        Push(&S, n);
     }
-}
+    while (!IsEmpty(S)) {
+        if (InfoTop(S) == 0) {
+            Pop(&S, &temp);
+            printf("fibonacci(%d)\n", temp);
+        }
+        if (InfoTop(S) == 1) {
+            Pop(&S, &temp);
+            hasil++;
+            printf("fibonacci(%d)\n", temp);
+        }
+        else if (InfoTop(S) == 2) {
+            Pop(&S, &temp);
+            printf("fibonacci(%d)\n", temp);
+            printf("fibonacci(1)\n");
+            printf("fibonacci(0)\n");
+            hasil++;
+        }
+        else {
+            Pop(&S, &temp);
+            printf("fibonacci(%d)\n", temp);
+            Push(&S, temp-2);
+            Push(&S, temp-1);
+        }
+    }
 
-
-
-int main() {
-    int n, sum;
-    scanf("%d", &n);
-    // Stack S;
-    // CreateEmpty(&S);
-    // int sum, temp;
-    // int i, x, j;
-    // for (i = 1; i <= n; i++) {
-    //     Push(&S, i);
-    // }
-    // for (i = 0; i < Top(S); i++) {
-    //     Pop(&S, &x);
-    //     for (j = x; j >= 0; j--) {
-    //         printf("fibonacci(%d)\n", j);
-    //     }
-    // }
-    sum = call(n);
-    printf("%d\n", sum);
+    printf("%d\n", hasil);
 }

@@ -2,38 +2,18 @@
 #include "stack.h"
 // #include "stack.c"
 
-
-// int minim(int a, int b) {
-//     if (a < b) {
-//         return a;
-//     }
-//     else {
-//         return b;
-//     }
-// }
-
-
 void SortirKeranjang (Stack * S1, Stack * S2) {
-    int min;
-    int i, temp, j;
-    for (i = 0; i <= S1->TOP; i++) {
-        for (j = i; j <= S1->TOP; j++) {
-            if (S1->T[j] > S1->T[i]) {
-                temp = S1->T[i];
-                S1->T[i] = S1->T[j];
-                S1->T[j] = temp;
-            }
+    int temp, temp2;
+    while (!IsEmpty(*S1)) {
+        Pop(S1, &temp);
+        while (!IsEmpty(*S2) && temp > InfoTop(*S2)) {
+            Pop(S2, &temp2);
+            Push(S1, temp2);
         }
+        Push(S2, temp);
     }
-    // for (i = 0; i <= S1->TOP; i++) {
-    //     printf("%d\n", S1->T[i]);
-    // }
-    int x;
-    for (i = S1->TOP; i >= 0; i--) {
-        Push(S2, S1->T[i]);
-        Pop(S1, &x);
-    }
-} 
+}
+
 
 // int main() {
 //     Stack S1, S2;
@@ -47,10 +27,6 @@ void SortirKeranjang (Stack * S1, Stack * S2) {
 //         Push(&S1, x);
 //     }
 //     SortirKeranjang(&S1, &S2);
-//     printf("S1: \n");
-//     for (int i = 0; i <= S1.TOP; i++) {
-//         printf("%d", S1.T[i]);
-//     }
 //     printf("\nS2: \n");
 //     for (int i = 0; i <= S2.TOP; i++) {
 //         printf("%d", S2.T[i]);
