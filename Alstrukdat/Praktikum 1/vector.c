@@ -1,6 +1,6 @@
 /* File: vector.h */
 /* Tanggal: 03 September 2022 */
-#include "point.h"
+#include "../../Pra-Praktikum/Praktikum 1/point.h"
 #include <stdio.h>
 #include <math.h>
 

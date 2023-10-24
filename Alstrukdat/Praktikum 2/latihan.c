@@ -1,5 +1,5 @@
-#include "boolean.h"
-#include "liststatik.c"
+#include "../../Pra-Praktikum/Praktikum 2/boolean.h"
+#include "../../Pra-Praktikum/Praktikum 2/liststatik.c"
 #include <stdio.h>
 
 boolean isSimetris(ListStatik l) {

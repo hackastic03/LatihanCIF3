@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include "boolean.h"
-#include "matrix.c"
+#include "../../Pra-Praktikum/Praktikum 4/boolean.h"
+#include "../../Pra-Praktikum/Praktikum 4/matrix.c"
 
 Matrix insertRow(Matrix m1, Matrix m2, int n) {
     int i, j;

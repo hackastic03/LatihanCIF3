@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "time.c"
+#include "../../Pra-Praktikum/Praktikum 1/time.c"
 
 int main() {
     TIME t1, t2;

@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include "boolean.h"
-#include "liststatik.c"
+#include "../../Pra-Praktikum/Praktikum 2/boolean.h"
+#include "../../Pra-Praktikum/Praktikum 2/liststatik.c"
 
 int main() {
     ListStatik l1, l2, l;
