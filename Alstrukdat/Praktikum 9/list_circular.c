@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "boolean.h"
-#include "listsirkuler.h"
+#include "list_circular.h"
 
 boolean isEmpty(List l) {
     return FIRST(l) == NULL;
@@ -26,18 +26,37 @@ void deallocate(Address P) {
 
 Address search(List l, ElType val) {
     Address P = FIRST(l);
-    while (P != NULL) {
+    boolean found = false;
+    if (isEmpty(l)) {
+        return NULL;
+    }
+    while (NEXT(P) != FIRST(l) && !found) {
         if (INFO(P) == val) {
-            return P;
+            found = true;
         }
-        P = NEXT(P);
+        else {
+            P = NEXT(P);
+        }
+    }
+    if (INFO(P) == val) {
+        found = true;
+    }
+    if (found) {
+        return P;
     }
     return NULL;
 }
 
 boolean addrSearch(List l, Address p) {
     Address P = FIRST(l);
-    while (P != NULL) {
+    if (isEmpty(l)) {
+        return false;
+    }
+    if (P == p) {
+        return true;
+    }
+    P = NEXT(P);
+    while (P != FIRST(l)) {
         if (P == p) {
             return true;
         }
@@ -48,70 +67,65 @@ boolean addrSearch(List l, Address p) {
 
 void insertFirst(List *l, ElType val) {
     Address P = allocate(val);
-    if (P != NULL) {
-        if (isEmpty(*l)) {
-            NEXT(P) = P;
-        } else {
-            Address last = FIRST(*l);
-            while (NEXT(last) != FIRST(*l)) {
-                last = NEXT(last);
-            }
-            NEXT(P) = FIRST(*l);
-            NEXT(last) = P;
+    if (isEmpty(*l)) {
+        NEXT(P) = P;
+    } else {
+        Address last = FIRST(*l);
+        while (NEXT(last) != FIRST(*l)) {
+            last = NEXT(last);
         }
-        FIRST(*l) = P;
+        NEXT(P) = FIRST(*l);
+        NEXT(last) = P;
     }
+    FIRST(*l) = P;
 }
 
 void insertLast(List *l, ElType val) {
     Address P = allocate(val);
-    if (P != NULL) {
-        if (isEmpty(*l)) {
-            insertFirst(l, val);
-        } else {
-            Address last = FIRST(*l);
-            while (NEXT(last) != FIRST(*l)) {
-                last = NEXT(last);
-            }
-            NEXT(P) = FIRST(*l);
-            NEXT(last) = P;
+    if (isEmpty(*l)) {
+        insertFirst(l, val);
+    } else {
+        Address last = FIRST(*l);
+        while (NEXT(last) != FIRST(*l)) {
+            last = NEXT(last);
         }
+        NEXT(P) = FIRST(*l);
+        NEXT(last) = P;
     }
 }
 
 void deleteFirst(List *l, ElType * val) {
-    if (!isEmpty(*l)) {
-        Address P = FIRST(*l);
-        *val = INFO(P);
-        if (NEXT(P) == P) {
-            FIRST(*l) = NULL;
-        } else {
-            Address last = FIRST(*l);
-            while (NEXT(last) != FIRST(*l)) {
-                last = NEXT(last);
-            }
-            FIRST(*l) = NEXT(P);
-            NEXT(last) = FIRST(*l);
+    Address P = FIRST(*l);
+    *val = INFO(P);
+    if (NEXT(P) == P) {
+        FIRST(*l) = NULL;
+    } else {
+        Address last = FIRST(*l);
+        while (NEXT(last) != FIRST(*l)) {
+            last = NEXT(last);
         }
-        deallocate(P);
+        FIRST(*l) = NEXT(P);
+        NEXT(last) = FIRST(*l);
     }
+    deallocate(P);
 }
 
 void deleteLast(List *l, ElType *val) {
-    if (!isEmpty(*l)) {
-        Address P = FIRST(*l);
-        if (NEXT(P) == P) {
-            deleteFirst(l, val);
-        } else {
-            Address last = FIRST(*l);
-            while (NEXT(NEXT(last)) != FIRST(*l)) {
-                last = NEXT(last);
-            }
-            *val = INFO(NEXT(last));
-            deallocate(NEXT(last));
-            NEXT(last) = FIRST(*l);
+    Address P = FIRST(*l);
+    Address previous = NULL;
+    if (NEXT(P) == P) {
+        deleteFirst(l, val);
+    } else {
+        Address last = FIRST(*l);
+        while (NEXT(last) != FIRST(*l)) {
+            previous = last;
+            last = NEXT(last);
         }
+        *val = INFO(last);
+        NEXT(previous) = FIRST(*l);
+        free(last);
     }
+
 }
 
 void displayList(List l) {
@@ -119,12 +133,10 @@ void displayList(List l) {
     if (!isEmpty(l)) {
         Address P = FIRST(l);
         while (NEXT(P) != FIRST(l)) {
-            printf("%d", INFO(P));
+            printf("%d,", INFO(P));
             P = NEXT(P);
-            if (NEXT(P) != FIRST(l)) {
-                printf(",");
-            }
         }
+        printf("%d", INFO(P));
     }
     printf("]");
 }

@@ -10,41 +10,55 @@ int chartoint(char c) {
 }
 
 int main() {
-    Stack num;
-    CreateEmpty(&num);
-    int i;
-    long long int temp;
-
-    STARTWORD();
-    // Angka pertama
-    long long int a = 0;
-    for (i = 0; i < currentWord.Length; i++) {
-        temp = chartoint(currentWord.TabWord[i]);
-        Push(&num, temp);
+    Word listWords[100];
+    int countWord = 0;
+    START();
+    while(currentChar != MARK){
+        ADVWORD();
+        listWords[countWord] = currentWord;
+        countWord++;
     }
-    int pengali = 1;
-    
-    while (!IsEmpty(num)) {
-        Pop(&num, &temp);
-        a += temp * pengali;
-        pengali *= 10;
+    Stack S;
+    CreateEmpty(&S);
+    int i,j;
+    int diff = listWords[0].Length - listWords[1].Length;
+    for(i=0; i<listWords[0].Length;i++){
+        if(i < diff){
+            int convert = chartoint(listWords[0].TabWord[i]);
+            Push(&S,convert);
+        } else{
+            int convert = (chartoint(listWords[0].TabWord[i])) - (chartoint(listWords[1].TabWord[i-diff]));
+            Push(&S, convert);
+        }
     }
-    ADVWORD();
-
-    // Angka kedua
-    long long int b = 0;
-    for (i = 0; i < currentWord.Length; i++) {
-        temp = chartoint(currentWord.TabWord[i]);
-        Push(&num, temp);
+    Stack Srefersed;
+    CreateEmpty(&Srefersed);
+    boolean carry = false;
+    while(!IsEmpty(S)){
+        int temp;
+        Pop(&S,&temp);
+        if(carry){
+            temp--;
+            carry = false;
+        }
+        if(temp < 0){
+            temp += 10;
+            carry = true;
+        }
+        Push(&Srefersed,temp);
     }
-    pengali = 1;
-    while (!IsEmpty(num)) {
-        Pop(&num, &temp);
-        b += temp * pengali;
-        pengali *= 10;
+
+    i = 0;
+    while(InfoTop(Srefersed) == 0 && i < listWords[0].Length-1){
+        int temp;
+        Pop(&Srefersed, &temp);
+        i++;
     }
 
-    printf("%lld\n", a-b);
-
-    return 0;
+    while(!IsEmpty(Srefersed)){
+        int temp;
+        Pop(&Srefersed,&temp);
+        printf("%d",temp);
+    }
+    printf("\n");
 }
