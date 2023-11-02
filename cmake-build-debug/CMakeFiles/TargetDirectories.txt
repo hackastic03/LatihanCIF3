@@ -1,0 +1,3 @@
+D:/C/Kelas 3/cmake-build-debug/CMakeFiles/Pointer/test1.c.dir
+D:/C/Kelas 3/cmake-build-debug/CMakeFiles/edit_cache.dir
+D:/C/Kelas 3/cmake-build-debug/CMakeFiles/rebuild_cache.dir

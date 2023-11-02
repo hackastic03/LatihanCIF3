@@ -26,14 +26,17 @@ factorial(N, Result) :-
     Result is N * Result1.
 
 % Maksimum 3 angka
-
 max2(X, Y, Z, X) :- X >= Y, X >= Z.
 max2(X, Y, Z, Y) :- Y >= X, Y >= Z.
 max2(X, Y, Z, Z) :- Z >= X, Z >= Y.
 
-% Absolut sebuah bilangan
-abs(X, X) :- X >= 0.
-abs(X, Y) :- X < 0, Y is -X.
 
 % Menentukan apakah suatu nilai merupakan bilangan positif, atau negatif
 isPositive(X) :- X >= 0.
+
+
+% Absolut sebuah bilangan
+abs(X, X) :- isPositive(X).
+abs(X, Y) :- X < 0, Y is -X.
+
+
