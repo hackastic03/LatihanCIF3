@@ -2,12 +2,12 @@
 #include "merge.h"
 #include "boolean.h"
 #include <stdio.h>
-#include "listlinier.c"
+//#include "listlinier.c"
 
 void splitList(List source, List* front, List* back) {
     int len = length(source);
     Address p1 = FIRST(source);
-    int i, a, b =0;
+    int i, a, b = 0;
     if (len % 2 == 0) {
         a = len / 2;
     }
@@ -15,46 +15,34 @@ void splitList(List source, List* front, List* back) {
         a = (len / 2) + 1;
     }
     while (b != a) {
-            insertLast(front, INFO(p1));
-            p1 = NEXT(p1);
-            b++;
-        }
-        while (p1 != NULL) {
-            insertLast(back, INFO(p1));
-            p1 = NEXT(p1);
-        }
+        insertLast(front, INFO(p1));
+        p1 = NEXT(p1);
+        b++;
+    }
+    while (p1 != FIRST(source)) {
+        insertLast(back, INFO(p1));
+        p1 = NEXT(p1);
+    }
+
 }
 
 List merge(List a, List b) {
-    List l;
-    CreateList(&l);
-    if (FIRST(a) == NULL) {
+    if (isEmpty(a)) {
         return b;
     }
-    else if (FIRST(b) == NULL) {
+    if (isEmpty(b)) {
         return a;
     }
-    else {
-        l = concat(a, b);
-        Address P1 = FIRST(l);
-        Address P2 = FIRST(l);
-        int i, j, len = length(l);
-        for (i = 0; i < len; i++) {
-            for (j = 0; j < len; j++) {
-                if (INFO(P1) > INFO(P2)) {
-                    Address temp = P1;
-                    P1 = P2;
-                    P2 = temp;
-                }
-                P1 = NEXT(P1);
-            }
-            P2 = NEXT(P2);
-
-        }
-
-
-        return l;
+    Address temp;
+    if (INFO(a) > INFO(b)) {
+        temp = a;
+        NEXT(temp) = merge(NEXT(a), b);
     }
+    else {
+        temp = b;
+        NEXT(temp) = merge(a, NEXT(b));
+    }
+    return temp;
 }
 
 void mergeSort(List* list) {

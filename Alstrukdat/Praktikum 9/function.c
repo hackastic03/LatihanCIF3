@@ -46,10 +46,12 @@ int length(List l) {
         return 1;
     }
     else {
+        P = NEXT(P);
         int i = 1;
 
         while ((P) != FIRST(l)) {
             i++;
+            printf("%d", INFO(P));
             P = NEXT(P);
         }
         return i;
@@ -79,7 +81,6 @@ void swapInfo(List *l, int id1, int id2) {
 
 
 void bubbleSort(List *l) {
-
     int i, j;
     for (i = 0; i < length(*l); i++) {
         int swapped = 0;
@@ -96,6 +97,76 @@ void bubbleSort(List *l) {
     }
 }
 
+void splitList(List source, List* front, List* back) {
+    int len = length(source);
+    Address p1 = FIRST(source);
+    int i, a, b = 0;
+    if (len % 2 == 0) {
+        a = len / 2;
+    }
+    else {
+        a = (len / 2) + 1;
+    }
+    while (b != a) {
+        insertLast(front, INFO(p1));
+        p1 = NEXT(p1);
+        b++;
+    }
+    while (p1 != FIRST(source)) {
+        insertLast(back, INFO(p1));
+        p1 = NEXT(p1);
+    }
+    printf("\n");
+    displayList(*front);
+    displayList(*back);
+    printf("\n");
+}
+
+
+List merge(List a, List b) {
+    if (isEmpty(a)) {
+        return b;
+    }
+    if (isEmpty(b)) {
+        return a;
+    }
+    Address temp;
+    if (INFO())
+}
+
+void pemain() {
+    List l;
+    CreateList(&l);
+    int n, k;
+    scanf("%d", &n);
+    scanf("%d", &k);
+    int i;
+    for (i = 1; i <= n; i++) {
+        insertLast(&l, i);
+    }
+    Address P;
+    int val, loc, step = 0;
+    while (step < n) {
+        step++;
+        val = k;
+        P = FIRST(l);
+        while (val > 1) {
+            P = NEXT(P);
+            val--;
+        }
+        loc = INFO(P);
+        FIRST(l) = P;
+        deleteFirst(&l, &val);
+        if (step == n) {
+            printf("Pemenang: %d", loc);
+        }
+        else {
+            printf("%d\n", loc);
+        }
+    }
+}
+
+
 int main() {
     List l;
     CreateList(&l);
@@ -103,20 +174,24 @@ int main() {
     scanf("%d", &n);
     int i;
     for (i = 0; i < n; i++) {
-        printf("Masukkan info: ");
         scanf("%d", &info);
         insertLast(&l, info);
     }
     printf("List: ");
     displayList(l);
     int n1, n2;
-    printf("\nMasukkan angka yang akan di-swap: ");
+    printf("\nMasukkan angka yang akan di-swap:");
     scanf("%d", &n1);
     scanf("%d", &n2);
     swapInfo(&l, n1, n2);
     printf("Hasil swap: ");
     displayList(l);
-    bubbleSort(&l);
-    printf("\nHasil bubble sort: ");
-    displayList(l);
+//    bubbleSort(&l);
+//    printf("\nHasil bubble sort: ");
+//    displayList(l);
+    List front, back;
+    CreateList(&front);
+    CreateList(&back);
+    splitList(l, &front, &back);
+
 }
