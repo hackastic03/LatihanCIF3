@@ -12,7 +12,6 @@ Address newNode(ElType val) {
     return new;
 }
 
-
 void CreateList(List *l) {
     FIRST(*l) = NULL;
 }
@@ -75,7 +74,7 @@ void insertLast(List *l, ElType val) {
 
 void insertAt(List *l, ElType val, int idx) {
     if (idx == 0) {
-        insertFirst(l, val);
+                insertFirst(l, val);
     }
     else {
         Address P = newNode(val);
