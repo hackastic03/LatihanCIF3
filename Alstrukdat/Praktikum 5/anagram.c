@@ -2,53 +2,52 @@
 #include "boolean.h"
 #include "wordmachine.h"
 #include "charmachine.h"
-//#include "charmachine.c"
-//#include "charmachine.c"
+
+
+int isAnagram(char* Word1, char* Word2) {
+    int string[26] = {0};
+    int i = 0;
+    for (i = 0; Word1[i] != '\0'; i++) {
+        string[Word1[i] - 'a']++;
+    }
+    for (i = 0; Word2[i] != '\0'; i++) {
+        string[Word2[i] - 'a']--;
+    }
+
+    for (i = 0; i < 26; i++){
+        if (string[i] != 0) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
 
 int main() {
-    Word words[100];
-    int wordCount = 0;
-    int i, j, k;
-    int anagram = 0;
     STARTWORD();
+
+    char word[100][100]; // Maksimal 100 word dengan masing-masing panjang maksimal 20
+    int countWord = 0;
+
     while (!EndWord) {
-        words[wordCount] = currentWord;
-        wordCount++;
+        if (countWord < 100) {
+            for (int i = 0; i < currentWord.Length; i++) {
+                word[countWord][i] = currentWord.TabWord[i];
+            }
+            word[countWord][currentWord.Length] = '\0';
+            countWord++;
+        }
         ADVWORD();
     }
-    for (i = 0; i < wordCount; i++) {
-        for (j = i + 1; j < wordCount; j++) {
-            if (words[i].Length == words[j].Length) {
-//                boolean isAnagram = true;
-//                for (k = 0; k < words[i].Length; k++) {
-//                    if (words[i].TabWord[k] != words[j].TabWord[k]) {
-//                        isAnagram = false;
-//                        break;
-//                    }
-//                }
-                int s = 0, r;
-                int a = 0, b = 0;
-                while (s < words[i].Length) {
-                    a = 0, b = 0;
-                    char temp = words[i].TabWord[s];
-                    // Cek jumlah huruf temp di kata pertama
-                    for (r = 0; r < words[i].Length; r++) {
-                        if (temp == words[i].TabWord[r]) {
-                            a++;
-                        }
-                    }
-                    for (r = 0; r < words[j].Length; r++) {
-                        if (temp == words[j].TabWord[r]) {
-                            b++;
-                        }
-                    }
-                    s++;
-                }
-                if (a == b) {
-                    anagram++;
-                }
+
+    int jumlahAnagram = 0;
+    int i, j;
+    for (i = 0; i < countWord; i++) {
+        for (j = i + 1; j < countWord; j++) {
+            if (isAnagram(word[i], word[j])) {
+                jumlahAnagram++;
             }
         }
     }
-    printf("%d\n", anagram);
+    printf("%d\n", jumlahAnagram);
 }

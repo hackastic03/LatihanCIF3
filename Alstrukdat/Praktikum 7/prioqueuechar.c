@@ -21,8 +21,10 @@ boolean IsEmpty (PrioQueueChar Q) {
 
 /* Mengirim true jika Q kosong: lihat definisi di atas */
 boolean IsFull (PrioQueueChar Q) {
-    return (Q.HEAD == 0) && (Q.TAIL == Q.MaxEl - 1);
+//    return (Q.HEAD == 0) && (Q.TAIL == Q.MaxEl - 1);
+    return NBElmt(Q) == MaxEl(Q);
 }
+
 /* Mengirim true jika tabel penampung elemen Q sudah penuh */
 /* yaitu mengandung elemen sebanyak MaxEl */
 int NBElmt (PrioQueueChar Q) {
@@ -40,9 +42,15 @@ int NBElmt (PrioQueueChar Q) {
 
 /* *** Kreator *** */
 void MakeEmpty (PrioQueueChar * Q, int Max) {
-    (*Q).HEAD = Nil;
-    (*Q).TAIL = Nil;
     (*Q).T = (infotype*) malloc(Max + 1);
+    if ((*Q).T == NULL) {
+        MaxEl(*Q) = 0;
+    }
+    else {
+        MaxEl(*Q) = Max;
+        Head(*Q) = Nil;
+        Tail(*Q) = Nil;
+    }
 }
 /* I.S. sembarang */
 /* F.S. Sebuah Q kosong terbentuk dan salah satu kondisi sbb: */
@@ -52,10 +60,10 @@ void MakeEmpty (PrioQueueChar * Q, int Max) {
 
 /* *** Destruktor *** */
 void DeAlokasi(PrioQueueChar * Q) {
-    MaxEl(*Q) = 0;
     (*Q).HEAD = Nil;
     (*Q).TAIL = Nil;
-    free(Q);
+    MaxEl(*Q) = 0;
+    free((*Q).T);
 }
 /* Proses: Mengembalikan memori Q */
 /* I.S. Q pernah dialokasi */
@@ -63,31 +71,37 @@ void DeAlokasi(PrioQueueChar * Q) {
 
 /* *** Primitif Add/Delete *** */
 void Enqueue (PrioQueueChar * Q, infotype X) {
+    int i, j;
     if (IsEmpty(*Q)) {
-        (*Q).HEAD = 0;
-        (*Q).TAIL = 0;
-        Prio((*Q).T[0]) = X.prio;
-        Info((*Q).T[0]) = X.info;
+        Head(*Q) = 0;
+        Tail(*Q) = 0;
+        InfoTail(*Q) = X;
     }
     else {
-        int i, index = 0;
-        if (Tail(*Q) == MaxEl(*Q) - 1) {
+        if(Tail(*Q) == MaxEl(*Q) - 1){
             Tail(*Q) = 0;
         }
-        else {
-            Tail(*Q)++;
+        else{
+            Tail(*Q) ++;
         }
-        for (i = 1; i < NBElmt(*Q); i++) {
-            // Cari indeks dulu
-            if (X.prio > Prio(Elmt(*Q, i) )) {
-                index = i - 1;
-                break;
+        InfoTail(*Q) = X;
+        i = Tail(*Q);
+        if(i == 0){
+            j = MaxEl(*Q) - 1;
+        } else{
+            j = i - 1;
+        }
+        while (i != Head(*Q) && Prio(Elmt(*Q, i)) < (Prio(Elmt(*Q, j)))) {
+            infotype temp = Elmt(*Q, i);
+            Elmt(*Q, i) = Elmt(*Q, j);
+            Elmt(*Q, j) = temp;
+            i = j;
+            if(i == 0){
+                j = MaxEl(*Q) - 1;
+            } else{
+                j = i - 1;
             }
         }
-        for (i = NBElmt(*Q) - 1; i > index; i--) {
-            (*Q).T[i] = (*Q).T[i - 1];
-        }
-        (*Q).T[index] = X;    
     }
 }
 /* Proses: Menambahkan X pada Q dengan aturan priority queue, terurut membesar berdasarkan prio */
@@ -95,16 +109,17 @@ void Enqueue (PrioQueueChar * Q, infotype X) {
 /* F.S. X disisipkan pada posisi yang tepat sesuai dengan prioritas,
         TAIL "maju" dengan mekanisme circular buffer; */
 void Dequeue (PrioQueueChar * Q, infotype * X) {
-    *X = Q->T[Head(*Q)];
     if (NBElmt(*Q) == 1) {
+        *X = InfoHead(*Q);
         Head(*Q) = Nil;
         Tail(*Q) = Nil;
     }
     else {
-        if (Head(*Q) == MaxEl(*Q) - 1) {
+        *X = InfoHead(*Q);
+        if(Head(*Q) == MaxEl(*Q)-1){
             Head(*Q) = 0;
         }
-        else {
+        else{
             Head(*Q)++;
         }
     }
@@ -116,9 +131,13 @@ void Dequeue (PrioQueueChar * Q, infotype * X) {
 
 /* Operasi Tambahan */
 void PrintPrioQueueChar (PrioQueueChar Q) {
-    int i;
-    for (i = 0; i < NBElmt(Q); i++) {
-        printf("%d %c\n", Prio(Q.T[i]), Info(Q.T[i]));
+    infotype val;
+    PrioQueueChar temp = Q;
+    if (!IsEmpty(Q)) {
+        while (!IsEmpty(temp)) {
+            Dequeue(&temp, &val);
+            printf("%d %c\n", Prio(val), Info(val));
+        }
     }
     printf("#\n");
 }
@@ -130,26 +149,3 @@ void PrintPrioQueueChar (PrioQueueChar Q) {
 <prio-n> <elemen-n>
 #
 */
-
-int main() {
-    PrioQueueChar p;
-    int nmax;
-    printf("Masukkan MaxEl:");
-    scanf("%d", &nmax);
-    MakeEmpty(&p, nmax);
-    infotype x;
-    int prio, n;
-    char c;
-    printf("Masukkan jumlah elemen:");
-    scanf("%d", &n);
-    for (int i = 0; i < n; i++) {
-        scanf("%d %c", &prio, &c);
-        Prio(x) = prio;
-        Info(x) = c;
-        Enqueue(&p, x);
-        printf("Length: %d\n", NBElmt(p));
-        PrintPrioQueueChar(p);
-    }
-    PrintPrioQueueChar(p);
-    return 0;
-}

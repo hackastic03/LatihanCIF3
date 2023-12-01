@@ -6,55 +6,59 @@
 
 void splitList(List source, List* front, List* back) {
     int len = length(source);
-    Address p1 = FIRST(source);
-    int i, a, b = 0;
-    if (len % 2 == 0) {
-        a = len / 2;
+    if(len % 2 == 1){
+        len++;
     }
-    else {
-        a = (len / 2) + 1;
-    }
-    while (b != a) {
-        insertLast(front, INFO(p1));
-        p1 = NEXT(p1);
-        b++;
-    }
-    while (p1 != FIRST(source)) {
-        insertLast(back, INFO(p1));
-        p1 = NEXT(p1);
-    }
+    int mid = len / 2;
 
+    *front = source;
+    *back = NULL;
+
+    if (len > 1) {
+        int i;
+        Address P = source;
+        for (i = 0; i < mid - 1; i++) {
+            P = NEXT(P);
+        }
+
+        *back = NEXT(P);
+        NEXT(P) = NULL;
+    }
 }
 
 List merge(List a, List b) {
-    if (isEmpty(a)) {
-        return b;
+    List L = NULL;
+    Address P1 = a, P2 = b;
+    while (P1 != NULL && P2 != NULL) {
+        if (INFO(P1) <= INFO(P2)) {
+            L = concat(L, newNode(INFO(P1)));
+            P1 = NEXT(P1);
+        } else {
+            L = concat(L, newNode(INFO(P2)));
+            P2 = NEXT(P2);
+        }
     }
-    if (isEmpty(b)) {
-        return a;
+    while (P1 != NULL) {
+        L = concat(L, newNode(INFO(P1)));
+        P1 = NEXT(P1);
     }
-    Address temp;
-    if (INFO(a) > INFO(b)) {
-        temp = a;
-        NEXT(temp) = merge(NEXT(a), b);
+    while (P2 != NULL) {
+        L = concat(L, newNode(INFO(P2)));
+        P2 = NEXT(P2);
     }
-    else {
-        temp = b;
-        NEXT(temp) = merge(a, NEXT(b));
-    }
-    return temp;
+    return L;
 }
 
 void mergeSort(List* list) {
-    Address head = FIRST(*list);
-    if (head == NULL || NEXT(head) == NULL) {
+    displayList(*list);
+    printf("\n");
+    if (isEmpty(*list) || NEXT(*list) == NULL) {
         return;
+    } else {
+        List l1, l2;
+        splitList(*list, &l1, &l2);
+        mergeSort(&l1);
+        mergeSort(&l2);
+        *list = merge(l1, l2);
     }
-    List front, back;
-    CreateList(&front);
-    CreateList(&back);
-    splitList(*list, &front, &back);
-    mergeSort(&front);
-    mergeSort(&back);
-    merge(front, back);
 }

@@ -6,64 +6,51 @@
 int main() {
     int n;
     scanf("%d", &n);
+    int i, op, temp;
     List L;
     CreateList(&L);
-    
-    int op;
     scanf("%d", &op);
-    if (n != 0) {
-        int i;
-        int hit = 0;
-        float pembagi = 0;
+    float hit = 0;
+    if (op > 0) {
         for (i = 0; i < op; i++) {
             int val;
             scanf("%d", &val);
-            if (length(L) != n) {
-                if (indexOf(L, val) != IDX_UNDEF) {
-                    printf("hit ");
-                    hit++;
-                    int sisa;
-                    deleteAt(&L, indexOf(L, val), &sisa);
+            if (isEmpty(L)) {
+                if (length(L) < n) {
                     insertFirst(&L, val);
                 }
-                else {
-                    printf("miss ");
-                    insertFirst(&L, val);
-                }
+                printf("miss ");
                 displayList(L);
+                printf("\n");
+            }
+            else if (indexOf(L, val) != IDX_UNDEF) {
+                hit++;
+                deleteAt(&L, indexOf(L, val), &temp);
+                insertFirst(&L, val);
+                printf("hit ");
+                displayList(L);
+                printf("\n");
+            }
+            else if (length(L) == n) {
+                deleteLast(&L, &temp);
+                insertFirst(&L, val);
+                printf("miss ");
+                displayList(L);
+                printf("\n");
             }
             else {
-                // printf("Full\n");
-                int x;
-                if (indexOf(L, val) == IDX_UNDEF) {
-                    printf("miss ");
-                    deleteLast(&L, &x);
-                    insertFirst(&L, val);
-                }
-                else {
-                    printf("hit ");
-                    hit++;
-                    int sisa;
-                    deleteAt(&L, indexOf(L, val), &sisa);
-                    insertFirst(&L, val);
-                }
-                    
-                    displayList(L);
+                insertFirst(&L, val);
+                printf("miss ");
+                displayList(L);
+                printf("\n");
             }
-            printf("\n");
-            pembagi++;
-
-            
         }
-        if (pembagi == 0) {
-            printf("hit ratio: 0\n");
-        }
-        else { 
-            printf("hit ratio: %.2f\n", hit / pembagi);
-        }
+        double ratio = hit / op;
+        printf("hit ratio: %.2f\n", ratio);
     }
     else {
-        printf("hit ratio: 0\n");
+        printf("hit ratio: 0.00\n");
     }
+    return 0;
 
 }
